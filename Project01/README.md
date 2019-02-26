@@ -42,11 +42,12 @@ Enter an American listed stock (NASDAQ, NYSE), for example 'msft' represents Mic
 1 Month information on msft:
 date,open,high,low,close,volume,unadjustedVolume,change,changePercent,vwap,label,changeOverTime
 2019-01-24,106.4055,106.5449,104.892,105.7483,23164838,23164838,-0.507831,-0.478,105.5886,Jan 24,0 ...
-2019-02-22,110.05,111.2,109.82,110.97,27763218,27763218,1.56,1.426,110.7459,Feb 22,0.04937857157041767 
+2019-02-22,110.05,111.2,109.82,110.97,27763218,27763218,1.56,1.426,110.7459,Feb 22,0.04937857157041767  
+```
 
-Current msft stock price: Sun Feb 24 06:43:13 UTC 2019 110.97 ``` 
+ ``` Current msft stock price: Sun Feb 24 06:43:13 UTC 2019 110.97 ``` 
 
- ```To exit back to the menu, enter 0 when prompted ```
+ ``` To exit back to the menu, enter 0 when prompted ```
 API reference: https://iextrading.com, https://www.marketwatch.com
 
 ### 5.2 TODO Log
