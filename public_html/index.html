@@ -1,26 +1,252 @@
 <!DOCTYPE html>
-<html>
-<head>
-<div class="jumbotron">
- <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<html lang="en">
 
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <head>
 
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--Logo and title for webpage-->
+    <title>Aarsh Patel</title>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+	  
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-  <meta charset="utf-8" name="viewport" 
-        content="width=device-width, initial-scale=1"> 
-  <h1 class="display-4">Welcome To Aarsh's Webpage!</h1>
-    <a class="btn btn-primary btn-lg" href="http://www.aarshpatel.com" >take me to the real thing</a>
-  </p>
-</div>
-<br>
-<a href="Lab6/lab06.html"> <h1> Click here to to go to LAB 6</h1></a>
-</head>
-<body>
+    
+    <!--Custom CSS for Bootstrap CSS-->
+    <style type = 'text/css'>
+    
+        #name{
+            font-family:Helvetica;
+            color:white;
+            background-color:rgba(37, 37, 37, 0.9);
+            padding:none;
+            margin: none;
+            font-size: 7vmin;
+            width:100%;
+            text-align: center;
+            position: absolute;
+            top: 20%;
+           
+        }
+         #credit{
+          position:absolute;
+          right: 5px;
+          bottom: 5px;
+          background: rgba(0, 0, 0, 0.5);
+          color: rgba(255, 255, 255, 0.5);
+          font-size: 1vmin;
+        }
+        a {
+          color: rgba(255, 255, 255, 0.5);
+          font-family: helvetica;
+          text-decoration: none;
+        }
+        a:hover {
+         text-decoration: none;
+         color: rgba(255, 255, 255, 0.5);
+        }
 
-</body>
+        a:active {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        a:visited {
+          color: rgba(255, 255, 255, 0.5);
+        }
+        #about{
+          background: rgba(119, 117, 255, 0.185);
+        }
+        #myChart{
+          background:rgb(255, 255, 255);
+        }
+        #ch{
+          padding-top:25px;
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <!--Reference https://www.openprocessing.org/sketch/494102-->
+    <!--Reference https://startbootstrap.com/-->
+    <link href="css/full.css" rel="stylesheet">
+    <script src="p5.min.js"></script>
+    <script src="myProgram.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+    
+    <script src="assets/js/ch.js"></script>
+    <!---Additional CSS script from bootstrap-->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="assets/css/devicons.css" >
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+   
+   
+  </head>
+
+
+  <body class="is-preload">
+    
+      <div id = "name" title = ":)">Aarsh Patel</div>
+
+    <!-- Navigation bar with links-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="project/project.html" >Projects</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link"href="https://drive.google.com/file/d/16JZzwJ37GjS1XlL0aZ4o25UIcTKexLki/view?usp=sharing" target="_blank">Resume
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href = "https://github.com/aarsh2000" target="_blank">GitHub</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href = "https://www.linkedin.com/in/aarsh-patel-9a4784163/" target="_blank">LinkedIn</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href = "https://devpost.com/aarsh2000" target="_blank">DevPost</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+    <!-- Page Content -->
+
+ 
+    <!--add-->
+    <!-- Wrapper -->
+			<div id="wrapper" class="wrapper divided">
+        <div id = "rolypoly"> 
+            <div id = "credit">
+                <a href = "https://www.openprocessing.org/user/111178#sketches"> Perlin Noise - Yasi</a>
+               </div>
+        </div>  
+
+        
+<!-- Introduction -->
+  <section id="about" class="banner style1 orient-right content-align-centre image-position-left fullscreen onscroll-content-fade-right">
+    <div class="content">
+      <h1>Hello</h1>
+      <p class="major">I am a Computer Science student at McMaster University and with a passion to learn, I am driven to design and develop innovative solutions to challenging problems in the industry.
+
+        </p>
+                    <ul class="actions stacked">
+                        <li><a target="_blank" href="https://drive.google.com/file/d/16JZzwJ37GjS1XlL0aZ4o25UIcTKexLki/view?usp=sharing" class="button large fit">Resume</a></li>
+                    </ul>
+      
+    </div>
+    <!--Custom div for script from openproccessing, connected to script-->
+    <div id = "rolypoly"> </div>  
+  </section>
+
+<!-- About Me -->
+  <section class="spotlight style1 orient-right content-align-left image-position-center onscroll-content-fade-left" id="first">
+    <div class="content">
+      <h2>About me</h2>
+      <p>As Tech Enthusiast, Software Developer, and Computer Science student, I am very curious about learning how things work.</a><br>So far, I have been/currently apart of,</p>
+                    <ul>
+                        <li>McMaster Artificial Intelligence Society</li>
+                        <li>Hackathons: Delta Hacks V, Hack Western 5, Hack The North</li>
+                        <li>IBM Technology Conference</li>
+                    </ul>
+    </div>
+    <div class="image">
+      <img src="images/spotlight02.gif" alt="" draggable="false"/>
+    </div>
+  </section>
+
+<!-- About Me -->
+  <section class="spotlight style1 orient-left content-align-left image-position-center onscroll-content-fade-right" id="second">
+    <div class="content">
+      <h2>Software Development</h2>
+      <p>With knowledge in a variety of programming languages, I am constantly seeking to add more to my tool box. I have worked with many common libraries such as Django (server side), TensorFlow.js, and Angular.js. I have also worked with industry demanding technologies, such as Git version control, and client/server side programming.  With interest in Artificial Intelligence, I plan on focusing more on Data Science and Machine Learning.</p>
+    </div>
+    <!--Canvas for pie chart-->
+    <div id="ch">
+      <canvas id="myChart" width="400" height="400"></canvas>
+    <!--Script for chart, from chartjs-->
+    <script>
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+          labels: ["Python", "HTML/CSS", "JavaScript", "Java", "Bash", "Haskell", "Elm"],
+            datasets: [{
+                label: '',
+                data: [85, 87, 90, 80, 83, 75, 60],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(145, 234, 23, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(145, 234, 23, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+      
+      
+        options: {
+          responsive: true,
+          legend:{
+            display:false
+          },
+          scale: {
+            ticks: {
+                max:100
+                }
+            },
+            scales: {
+                display:false
+            },
+            plugins: {
+              labels: {
+                render: 'label'
+              },
+              
+            
+          }
+        }
+    });
+    </script>
+    </div> 
+  </section>
+
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!--Additional Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+  </body>
+
 </html>
