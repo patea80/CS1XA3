@@ -16,7 +16,7 @@ import String
 
 
 rootUrl =
-    "http://localhost:8000/e/macid/"
+    "http://localhost:8000/"
 
 
 
@@ -105,22 +105,16 @@ view model = div []
                     , div [ class "signin" ]
                         [ div [ class "signin-rit" ]
                             []
-                        , Html.form []
-                            [ div [ class "log-input" ]
-                                [ div [ class "log-input-left" ]
-                                    [ viewInput "text" "Email" model.name NewName ]
-                                , div [ class "clearfix" ]
-                                    []
+                    , div []
+                            [ div []
+                                [ viewInput "text" "Name" model.name NewName
+                                , viewInput "password" "Password" model.password NewPassword
                                 ]
-                            , div [ class "log-input" ]
-                                [ div [ class "log-input-left" ] 
-                                    [ viewInput "password" "Password" model.password NewPassword ]
-                                , div [ class "clearfix" ]
-                                    []
+                            , div []
+                                [ button [ Events.onClick LoginButton ] [ text "Login" ]
+                                , text model.error
                                 ]
-                            , input [ type_ "submit", value "Log in", Events.onClick LoginButton ]
-                                []
-                            ]
+                    ]
                         ]
                     , div [ class "new_people" ]
                         [ a [ href "register.html" ]
@@ -202,7 +196,7 @@ update msg model =
                     ( { model | error = "failed to login" }, Cmd.none )
 
                 Ok _ ->
-                    ( model, load (rootUrl ++ "static/userpage.html") )
+                    ( model, load ("https://google.com") )
 
                 Err error ->
                     ( handleError model error, Cmd.none )
