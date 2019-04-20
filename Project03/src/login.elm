@@ -40,7 +40,7 @@ main =
 
 
 type alias Model =
-    { name : String, password : String, error : String }
+    { name : String, password : String, error : String, failed :String }
 
 
 type Msg
@@ -55,6 +55,7 @@ init _ =
     ( { name = ""
       , password = ""
       , error = ""
+      , failed = "Let me in!"
       }
     , Cmd.none
     )
@@ -106,13 +107,22 @@ view model = div []
                         [ div [ class "signin-rit" ]
                             []
                     , div []
-                            [ div []
-                                [ viewInput "text" "Name" model.name NewName
-                                , viewInput "password" "Password" model.password NewPassword
+                            [ div [ class "log-input" ]
+                                [ div [ class "log-input-left" ]
+                                    [ viewInput "text" "Username" model.name NewName]
+                                , div [ class "clearfix" ]
+                                    []
+                                ]
+
+                              , div [ class "log-input" ]
+                                [ div [ class "log-input-left" ] 
+                                    [ viewInput "password" "Password" model.password NewPassword ]
+                                , div [ class "clearfix" ]
+                                    []
                                 ]
                             , div []
-                                [ button [ Events.onClick LoginButton ] [ text "Login" ]
-                                , text model.error
+                                [ input [ type_ "submit", value model.failed, Events.onClick LoginButton ]
+                                    []
                                 ]
                     ]
                         ]
@@ -193,7 +203,7 @@ update msg model =
         GotLoginResponse result ->
             case result of
                 Ok "LoginFailed" ->
-                    ( { model | error = "failed to login" }, Cmd.none )
+                    ( { model | error = "failed to login", failed = "Login failed, try again :(" }, Cmd.none )
 
                 Ok _ ->
                     ( model, load ("https://google.com") )

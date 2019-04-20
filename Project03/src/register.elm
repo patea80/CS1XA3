@@ -38,14 +38,14 @@ main =
    --------------------------------------------------------------------------------------------
 -}
 
-
 type alias Model =
-    { name : String, password : String, error : String }
+    { name : String, password : String, confirmPass : String, error : String, failed :String }
 
 
 type Msg
     = NewName String -- Name text field changed
     | NewPassword String -- Password text field changed
+    | NewConfirmPass String
     | GotLoginResponse (Result Http.Error String) -- Http Post Response Received
     | LoginButton -- Login Button Pressed
 
@@ -54,7 +54,9 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { name = ""
       , password = ""
+      , confirmPass = ""
       , error = ""
+      , failed = "Sign up"
       }
     , Cmd.none
     )
@@ -112,10 +114,7 @@ view model = div []
                             ]
                         , div [ class "sign-up2" ]
                             [ div []
-                                [ input [ placeholder " ", attribute "required" " ", type_ "text" ]
-                                    []
-                                , text "								"
-                                ]
+                                [ viewInput "text" "Username" model.name NewName]
                             ]
                         , div [ class "clearfix" ]
                             []
@@ -127,10 +126,7 @@ view model = div []
                             ]
                         , div [ class "sign-up2" ]
                             [ div []
-                                [ input [ placeholder " ", attribute "required" " ", type_ "password" ]
-                                    []
-                                , text "								"
-                                ]
+                                [ viewInput "password" "Password" model.password NewPassword ]
                             ]
                         , div [ class "clearfix" ]
                             []
@@ -142,10 +138,9 @@ view model = div []
                             ]
                         , div [ class "sign-up2" ]
                             [ div []
-                                [ input [ placeholder " ", attribute "required" " ", type_ "password" ]
-                                    []
-                                , text "								"
-                                ]
+                                [ div []
+                                [ viewInput "password" "Password" model.confirmPass NewConfirmPass ]
+                            ]
                             ]
                         , div [ class "clearfix" ]
                             []
@@ -153,7 +148,7 @@ view model = div []
                     , div [ class "sub_home" ]
                         [ div [ class "sub_home_left" ]
                             [ div []
-                                [ input [ type_ "submit", value "Create" ]
+                                [ input [ type_ "submit", value model.failed, Events.onClick LoginButton ]
                                     []
                                 ]
                             ]
@@ -202,7 +197,7 @@ passwordEncoder model =
 loginPost : Model -> Cmd Msg
 loginPost model =
     Http.post
-        { url = rootUrl ++ "userauthapp/loginuser/"
+        { url = rootUrl ++ "userauthapp/adduser/"
         , body = Http.jsonBody <| passwordEncoder model
         , expect = Http.expectString GotLoginResponse
         }
@@ -227,13 +222,21 @@ update msg model =
         NewPassword password ->
             ( { model | password = password }, Cmd.none )
 
+        NewConfirmPass confirmPass ->
+            ( { model | confirmPass = confirmPass }, Cmd.none )
+
         LoginButton ->
-            ( model, loginPost model )
+            if model.password /= model.confirmPass then
+                 ( { model | failed = "Passwords do not match :(" }, Cmd.none )
+            else if model.name == "" || model.password == "" || model.confirmPass == "" then
+                ( { model | failed = "Please enter the required fields" }, Cmd.none )
+            else
+                ( model, loginPost model )
 
         GotLoginResponse result ->
             case result of
                 Ok "LoginFailed" ->
-                    ( { model | error = "failed to login" }, Cmd.none )
+                    ( { model | error = "failed to login", failed = "Login failed, try again :(" }, Cmd.none )
 
                 Ok _ ->
                     ( model, load ("https://google.com") )
