@@ -39,16 +39,15 @@ main =
 -}
 
 
+
 type alias Model =
     { name : String, password : String, error : String, failed :String }
-
 
 type Msg
     = NewName String -- Name text field changed
     | NewPassword String -- Password text field changed
     | GotLoginResponse (Result Http.Error String) -- Http Post Response Received
     | LoginButton -- Login Button Pressed
-
 
 init : () -> ( Model, Cmd Msg )
 init _ =
@@ -59,7 +58,6 @@ init _ =
       }
     , Cmd.none
     )
-
 
 -- View
 view : Model -> Html Msg
@@ -149,14 +147,12 @@ viewInput t p v toMsg =
     input [ type_ t, placeholder p, Events.onInput toMsg ] []
 
 
-
 {- -------------------------------------------------------------------------------------------
    - JSON Encode/Decode
    -   passwordEncoder turns a model name and password into a JSON value that can be used with
    -   Http.jsonBody
    --------------------------------------------------------------------------------------------
 -}
-
 
 passwordEncoder : Model -> JEncode.Value
 passwordEncoder model =
@@ -178,7 +174,6 @@ loginPost model =
         }
 
 
-
 {- -------------------------------------------------------------------------------------------
    - Update
    -   Sends a JSON Post with currently entered username and password upon button press
@@ -197,16 +192,20 @@ update msg model =
         NewPassword password ->
             ( { model | password = password }, Cmd.none )
 
+
         LoginButton ->
-            ( model, loginPost model )
+            if model.name == "" || model.password == ""  then
+                ( { model | failed = "Please enter the required fields" }, Cmd.none )
+            else
+                ( model, loginPost model )
 
         GotLoginResponse result ->
             case result of
                 Ok "LoginFailed" ->
-                    ( { model | error = "failed to login", failed = "Login failed, try again :(" }, Cmd.none )
+                    ( { model | error = "failed to login", failed = "Incorrect username or password, try again :(" }, Cmd.none )
 
                 Ok _ ->
-                    ( model, load ("https://google.com") )
+                    ( model, load "post.html" )
 
                 Err error ->
                     ( handleError model error, Cmd.none )

@@ -39,28 +39,34 @@ main =
 -}
 
 type alias Model =
-    { name : String, password : String, confirmPass : String, error : String, failed :String }
+    { fullname : String, email : String, name : String, password : String, confirmPass : String, error : String, failed :String }
 
 
 type Msg
-    = NewName String -- Name text field changed
+    =   NewFullName String
+    | NewEmail String
+    | NewName String -- Name text field changed
     | NewPassword String -- Password text field changed
     | NewConfirmPass String
     | GotLoginResponse (Result Http.Error String) -- Http Post Response Received
     | LoginButton -- Login Button Pressed
 
 
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { name = ""
+    ( { 
+        fullname = ""
+        , email = ""
+        , name = ""
       , password = ""
       , confirmPass = ""
       , error = ""
-      , failed = "Sign up"
+      , failed = "Let me in!"
       }
     , Cmd.none
     )
-
 
 -- View
 view : Model -> Html Msg
@@ -107,6 +113,21 @@ view model = div []
                         [ text "Create an account" ]
                     , h2 []
                         [ text "Personal Information" ]
+
+                    , div [ class "sign-u" ]
+                        [ div [ class "sign-up1" ]
+                            [ h4 []
+                                [ text "Full Name* :" ]
+                            ]
+                        , div [ class "sign-up2" ]
+                            [ div []
+                                [ viewInput "text" "Enter your first and last name" model.fullname NewFullName]
+                            ]
+                        , div [ class "clearfix" ]
+                            []
+                        ]
+
+
                     , div [ class "sign-u" ]
                         [ div [ class "sign-up1" ]
                             [ h4 []
@@ -119,6 +140,20 @@ view model = div []
                         , div [ class "clearfix" ]
                             []
                         ]
+
+                        , div [ class "sign-u" ]
+                        [ div [ class "sign-up1" ]
+                            [ h4 []
+                                [ text "Email* :" ]
+                            ]
+                        , div [ class "sign-up2" ]
+                            [ div []
+                                [ viewInput "text" "Email address" model.email NewEmail]
+                            ]
+                        , div [ class "clearfix" ]
+                            []
+                        ]
+                        
                     , div [ class "sign-u" ]
                         [ div [ class "sign-up1" ]
                             [ h4 []
@@ -139,7 +174,7 @@ view model = div []
                         , div [ class "sign-up2" ]
                             [ div []
                                 [ div []
-                                [ viewInput "password" "Password" model.confirmPass NewConfirmPass ]
+                                [ viewInput "password" "Type your password again" model.confirmPass NewConfirmPass ]
                             ]
                             ]
                         , div [ class "clearfix" ]
@@ -186,7 +221,14 @@ viewInput t p v toMsg =
 passwordEncoder : Model -> JEncode.Value
 passwordEncoder model =
     JEncode.object
-        [ ( "username"
+        [ 
+          ( "fullname"
+          , JEncode.string model.fullname
+          )
+        , ( "email"
+          , JEncode.string model.email
+          )
+        , ( "username"
           , JEncode.string model.name
           )
         , ( "password"
@@ -213,25 +255,34 @@ loginPost model =
 -}
 
 
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        NewFullName fullname ->
+            ( { model | fullname = fullname }, Cmd.none )
+        
+        NewEmail email ->
+            ( { model | email = email }, Cmd.none )
+
         NewName name ->
             ( { model | name = name }, Cmd.none )
 
         NewPassword password ->
             ( { model | password = password }, Cmd.none )
-
+    
         NewConfirmPass confirmPass ->
             ( { model | confirmPass = confirmPass }, Cmd.none )
 
         LoginButton ->
             if model.password /= model.confirmPass then
                  ( { model | failed = "Passwords do not match :(" }, Cmd.none )
-            else if model.name == "" || model.password == "" || model.confirmPass == "" then
+            else if model.fullname == "" || model.email == "" ||model.name == "" || model.password == "" || model.confirmPass == "" then
                 ( { model | failed = "Please enter the required fields" }, Cmd.none )
             else
                 ( model, loginPost model )
+
 
         GotLoginResponse result ->
             case result of
@@ -243,8 +294,6 @@ update msg model =
 
                 Err error ->
                     ( handleError model error, Cmd.none )
-
-
 
 -- put error message in model.error_response (rendered in view)
 
