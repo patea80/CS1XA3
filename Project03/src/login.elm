@@ -182,7 +182,6 @@ loginPost model =
    --------------------------------------------------------------------------------------------
 -}
 
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -204,12 +203,14 @@ update msg model =
                 Ok "LoginFailed" ->
                     ( { model | error = "failed to login", failed = "Incorrect username or password, try again :(" }, Cmd.none )
 
-                Ok _ ->
+                Ok "READY" ->
                     ( model, load "post.html" )
+
+                Ok _ ->
+                     ( { model | error = "failed to login", failed = "Something went wrong:(" }, Cmd.none )
 
                 Err error ->
                     ( handleError model error, Cmd.none )
-
 
 
 -- put error message in model.error_response (rendered in view)

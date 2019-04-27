@@ -32,7 +32,6 @@ main =
         }
 
 
-
 {- -------------------------------------------------------------------------------------------
    - Model
    --------------------------------------------------------------------------------------------
@@ -256,7 +255,6 @@ loginPost model =
 
 
 
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -290,7 +288,7 @@ update msg model =
                     ( { model | error = "failed to login", failed = "Login failed, try again :(" }, Cmd.none )
 
                 Ok _ ->
-                    ( model, load ("https://google.com") )
+                    ( model, load ("login.html") )
 
                 Err error ->
                     ( handleError model error, Cmd.none )

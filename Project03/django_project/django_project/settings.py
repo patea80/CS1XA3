@@ -121,9 +121,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-
-STATIC_URL = '/e/patea80/static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    "/home/patea80/CS1XA3/public_html/",
-]
-STATIC_ROOT = "/home/patea80/CS1XA3/django_project/static/"
+                    "../static",
+                    ]
+STATIC_ROOT = "./static"

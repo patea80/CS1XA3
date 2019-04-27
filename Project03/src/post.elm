@@ -40,7 +40,7 @@ main =
 
 
 type alias Model =
-    { title : String, price : String, description : String,  phnum : String, error : String, failed :String }
+    { title : String, price : String, description : String,  phnum : String, error : String, failed :String, pressed :Bool }
 
 
 type Msg
@@ -49,6 +49,7 @@ type Msg
     | NewDescription String -- Password text field changed
     | NewPhnum String -- Password text field changed
     | GotLoginResponse (Result Http.Error String) -- Http Post Response Received
+    | AuthResponse (Result Http.Error String) -- Http Post Response Received
     | LoginButton -- Login Button Pressed
 
 
@@ -60,6 +61,7 @@ init _ =
       , phnum = ""
       , error = ""
       , failed = "Post!"
+      , pressed = False
       }
     , auth
     )
@@ -68,9 +70,8 @@ auth : Cmd Msg
 auth = 
     Http.get { 
             url = rootUrl ++ "userauthapp/userinfo/",
-            expect = Http.expectString GotLoginResponse
+            expect = Http.expectString AuthResponse
         }
-
 
 -- View
 view : Model -> Html Msg
@@ -109,7 +110,7 @@ view model = div []
                                 [ div [ class "modal-header" ]
                                     []
                                 , div [ class "modal-body" ]
-                                    [ Html.form [ class "form-horizontal", attribute "role" "form" ]
+                                    [ div [ class "form-horizontal", attribute "role" "form" ]
                                         [ div [ class "form-group" ]
                                             []
                                         ]
@@ -140,7 +141,7 @@ view model = div []
             [ h2 [ class "head" ]
                 [ text "Post an Ad" ]
             , div [ class "post-ad-form" ]
-                [ Html.form []
+                [ div []
                     [ label []
                         [ text "Select Category "
                         , span []
@@ -206,7 +207,7 @@ view model = div []
                         [ label []
                             [ text "Photos for your ad :" ]
                         , div [ class "photos-upload-view" ]
-                            [ Html.form [ action "index.html", enctype "multipart/form-data", id "upload", method "POST" ]
+                            [ div [ action "index.html", enctype "multipart/form-data", id "upload", method "POST" ]
                                 [ input [ id "MAX_FILE_SIZE", name "MAX_FILE_SIZE", type_ "hidden", value "300000" ]
                                     []
                                 , div []
@@ -231,7 +232,7 @@ view model = div []
                             []
                         ]
                     , div [ class "personal-details" ]
-                        [ Html.form []
+                        [ div []
                             -- [ label []
                             --     [ text "Your Name "
                             --     , span []
@@ -380,7 +381,6 @@ loginPost model =
         }
 
 
-
 {- -------------------------------------------------------------------------------------------
    - Update
    -   Sends a JSON Post with currently entered username and password upon button press
@@ -405,22 +405,30 @@ update msg model =
             ( { model | phnum = phnum }, Cmd.none )
 
         LoginButton ->
-            ( model, loginPost model )
-
-        GotLoginResponse result ->
+             ( model, loginPost model )
+            
+        AuthResponse result ->
             case result of
                 Ok "LoginFailed" ->
-                    ( { model | error = "failed to login", failed = "Login failed, try again :(" }, Cmd.none )
-                
-                Ok "Success" ->
-                    ( { model | error = "Success", failed = "Success" }, Cmd.none )
-
+                    ( model, load ("login.html") )
+                Ok "Auth" ->
+                    ( model,  Cmd.none)
                 Ok _ ->
-                    ( model, load ("https://google.com") )
+                    ( model, Cmd.none )
 
                 Err error ->
                     ( handleError model error, Cmd.none )
 
+
+        GotLoginResponse result ->
+            case result of
+                Ok "AddPosted" ->
+                    ( model, load ("https://aarshpatel.com") )
+                Ok _ ->
+                    ( model, loginPost model )
+
+                Err error ->
+                    ( handleError model error, Cmd.none )
 
 
 -- put error message in model.error_response (rendered in view)
