@@ -4974,7 +4974,7 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$Login$init = function (_n0) {
 	return _Utils_Tuple2(
-		{confirmPass: '', email: '', error: '', failed: 'Let me in!', fullname: '', name: '', password: ''},
+		{confirmPass: '', email: '', error: '', failed: '', fullname: '', name: '', password: ''},
 		elm$core$Platform$Cmd$none);
 };
 var author$project$Login$handleError = F2(
@@ -5042,7 +5042,7 @@ var author$project$Login$passwordEncoder = function (model) {
 				elm$json$Json$Encode$string(model.password))
 			]));
 };
-var author$project$Login$rootUrl = 'http://localhost:8000/';
+var author$project$Login$rootUrl = 'https://mac1xa3.ca/e/patea80/';
 var elm$core$Basics$composeR = F3(
 	function (f, g, x) {
 		return g(
@@ -6215,16 +6215,23 @@ var author$project$Login$update = F2(
 			default:
 				var result = msg.a;
 				if (result.$ === 'Ok') {
-					if (result.a === 'LoginFailed') {
-						return _Utils_Tuple2(
-							_Utils_update(
+					switch (result.a) {
+						case 'LoginFailed':
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{error: 'failed to login', failed: 'Login failed, try again :('}),
+								elm$core$Platform$Cmd$none);
+						case 'Exsists':
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{error: 'failed to login', failed: 'Username already taken :('}),
+								elm$core$Platform$Cmd$none);
+						default:
+							return _Utils_Tuple2(
 								model,
-								{error: 'failed to login', failed: 'Login failed, try again :('}),
-							elm$core$Platform$Cmd$none);
-					} else {
-						return _Utils_Tuple2(
-							model,
-							elm$browser$Browser$Navigation$load('login.html'));
+								elm$browser$Browser$Navigation$load('project3.html'));
 					}
 				} else {
 					var error = result.a;
@@ -6452,7 +6459,7 @@ var author$project$Login$view = function (model) {
 										elm$html$Html$a,
 										_List_fromArray(
 											[
-												elm$html$Html$Attributes$href('index.html')
+												elm$html$Html$Attributes$href('project3.html')
 											]),
 										_List_fromArray(
 											[
@@ -6479,7 +6486,7 @@ var author$project$Login$view = function (model) {
 										_List_fromArray(
 											[
 												elm$html$Html$Attributes$class('account'),
-												elm$html$Html$Attributes$href('login.html')
+												elm$html$Html$Attributes$href('project3.html')
 											]),
 										_List_fromArray(
 											[
@@ -6524,7 +6531,7 @@ var author$project$Login$view = function (model) {
 												_List_Nil,
 												_List_fromArray(
 													[
-														elm$html$Html$text('Create an account')
+														elm$html$Html$text(model.failed)
 													])),
 												A2(
 												elm$html$Html$h2,
@@ -6746,7 +6753,7 @@ var author$project$Login$view = function (model) {
 																_List_Nil,
 																_List_fromArray(
 																	[
-																		elm$html$Html$text('Confirm Password* :')
+																		elm$html$Html$text('Password Again* :')
 																	]))
 															])),
 														A2(
@@ -6805,7 +6812,7 @@ var author$project$Login$view = function (model) {
 																		_List_fromArray(
 																			[
 																				elm$html$Html$Attributes$type_('submit'),
-																				elm$html$Html$Attributes$value(model.failed),
+																				elm$html$Html$Attributes$value('Sign up'),
 																				elm$html$Html$Events$onClick(author$project$Login$LoginButton)
 																			]),
 																		_List_Nil)

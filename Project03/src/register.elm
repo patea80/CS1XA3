@@ -16,9 +16,7 @@ import String
 
 
 rootUrl =
-    "http://localhost:8000/"
-
-
+    "https://mac1xa3.ca/e/patea80/"
 
 -- rootUrl = "https://mac1xa3.ca/e/macid/"
 
@@ -59,10 +57,10 @@ init _ =
         fullname = ""
         , email = ""
         , name = ""
-      , password = ""
-      , confirmPass = ""
-      , error = ""
-      , failed = "Let me in!"
+        , password = ""
+        , confirmPass = ""
+        , error = ""
+        , failed = ""
       }
     , Cmd.none
     )
@@ -91,14 +89,14 @@ view model = div []
     , div [ class "header" ]
         [ div [ class "container" ]
             [ div [ class "logo" ]
-                [ a [ href "index.html" ]
+                [ a [ href "project3.html" ]
                     [ span []
                         [ text "Re" ]
                     , text "sale"
                     ]
                 ]
             , div [ class "header-right" ]
-                [ a [ class "account", href "login.html" ]
+                [ a [ class "account", href "project3.html" ]
                     [ text "Log in" ]
                 , text "		"
                 ]
@@ -109,7 +107,7 @@ view model = div []
             [ div [ class "graphs" ]
                 [ div [ class "sign-up" ]
                     [ h1 []
-                        [ text "Create an account" ]
+                        [ text model.failed ]
                     , h2 []
                         [ text "Personal Information" ]
 
@@ -168,7 +166,7 @@ view model = div []
                     , div [ class "sign-u" ]
                         [ div [ class "sign-up1" ]
                             [ h4 []
-                                [ text "Confirm Password* :" ]
+                                [ text "Password Again* :" ]
                             ]
                         , div [ class "sign-up2" ]
                             [ div []
@@ -182,7 +180,7 @@ view model = div []
                     , div [ class "sub_home" ]
                         [ div [ class "sub_home_left" ]
                             [ div []
-                                [ input [ type_ "submit", value model.failed, Events.onClick LoginButton ]
+                                [ input [ type_ "submit", value "Sign up", Events.onClick LoginButton ]
                                     []
                                 ]
                             ]
@@ -206,7 +204,6 @@ view model = div []
 viewInput : String -> String -> String -> (String -> Msg) -> Html Msg
 viewInput t p v toMsg =
     input [ type_ t, placeholder p, Events.onInput toMsg ] []
-
 
 
 {- -------------------------------------------------------------------------------------------
@@ -247,13 +244,11 @@ loginPost model =
 
 {- -------------------------------------------------------------------------------------------
    - Update
-   -   Sends a JSON Post with currently entered username and password upon button press
-   -   Server send an Redirect Response that will automatically redirect to UserPage.html
+   -   Sends a JSON Post with currently entered data upon button press
+   -   Server send an Redirect Response that will automatically redirect
    -   upon success
    --------------------------------------------------------------------------------------------
 -}
-
-
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -286,9 +281,12 @@ update msg model =
             case result of
                 Ok "LoginFailed" ->
                     ( { model | error = "failed to login", failed = "Login failed, try again :(" }, Cmd.none )
+                
+                Ok "Exsists" ->
+                    ( { model | error = "failed to login", failed = "Username already taken :(" }, Cmd.none )
 
                 Ok _ ->
-                    ( model, load ("login.html") )
+                    ( model, load ("project3.html") )
 
                 Err error ->
                     ( handleError model error, Cmd.none )

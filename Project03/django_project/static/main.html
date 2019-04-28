@@ -4498,7 +4498,7 @@ function _Browser_load(url)
 var author$project$Login$AuthResponse = function (a) {
 	return {$: 'AuthResponse', a: a};
 };
-var author$project$Login$rootUrl = 'http://localhost:8000/';
+var author$project$Login$rootUrl = 'https://mac1xa3.ca/e/patea80/';
 var elm$core$Elm$JsArray$foldr = _JsArray_foldr;
 var elm$core$Array$foldr = F3(
 	function (func, baseCase, _n0) {
@@ -5855,37 +5855,51 @@ var author$project$Login$auth = elm$http$Http$get(
 var author$project$Login$init = function (_n0) {
 	return _Utils_Tuple2(
 		{
-			addInfo: {description: _List_Nil, phnum: _List_Nil, price: _List_Nil, title: _List_Nil},
+			addInfo: {date: _List_Nil, description: _List_Nil, phnum: _List_Nil, price: _List_Nil, title: _List_Nil, url: _List_Nil},
+			date: '',
 			description: '',
+			dubDate: _List_fromArray(
+				['']),
+			dubDescription: _List_fromArray(
+				['']),
+			dubPhnum: _List_fromArray(
+				['']),
+			dubPrice: _List_fromArray(
+				['']),
+			dubTitle: _List_fromArray(
+				['']),
+			dubUrl: _List_fromArray(
+				['']),
 			error: '',
-			failed: _List_fromArray(
-				['Post!', 'egg']),
 			phnum: '',
 			pressed: false,
 			price: '',
-			title: ''
+			title: '',
+			url: ''
 		},
 		author$project$Login$auth);
 };
-var author$project$Login$GotLoginResponse = function (a) {
-	return {$: 'GotLoginResponse', a: a};
+var author$project$Login$GotJsonInfo = function (a) {
+	return {$: 'GotJsonInfo', a: a};
 };
-var author$project$Login$AddInfo = F4(
-	function (title, price, description, phnum) {
-		return {description: description, phnum: phnum, price: price, title: title};
+var author$project$Login$AddInfo = F6(
+	function (title, price, description, phnum, url, date) {
+		return {date: date, description: description, phnum: phnum, price: price, title: title, url: url};
 	});
 var elm$json$Json$Decode$list = _Json_decodeList;
 var elm$json$Json$Decode$string = _Json_decodeString;
 var author$project$Login$listDecoder = elm$json$Json$Decode$list(elm$json$Json$Decode$string);
 var elm$json$Json$Decode$field = _Json_decodeField;
-var elm$json$Json$Decode$map4 = _Json_map4;
-var author$project$Login$infoJsonD = A5(
-	elm$json$Json$Decode$map4,
+var elm$json$Json$Decode$map6 = _Json_map6;
+var author$project$Login$infoJsonD = A7(
+	elm$json$Json$Decode$map6,
 	author$project$Login$AddInfo,
 	A2(elm$json$Json$Decode$field, 'title', author$project$Login$listDecoder),
 	A2(elm$json$Json$Decode$field, 'price', author$project$Login$listDecoder),
 	A2(elm$json$Json$Decode$field, 'description', author$project$Login$listDecoder),
-	A2(elm$json$Json$Decode$field, 'phnum', author$project$Login$listDecoder));
+	A2(elm$json$Json$Decode$field, 'phnum', author$project$Login$listDecoder),
+	A2(elm$json$Json$Decode$field, 'url', author$project$Login$listDecoder),
+	A2(elm$json$Json$Decode$field, 'date', author$project$Login$listDecoder));
 var elm$json$Json$Decode$decodeString = _Json_runOnString;
 var elm$http$Http$expectJson = F2(
 	function (toMsg, decoder) {
@@ -5902,7 +5916,7 @@ var elm$http$Http$expectJson = F2(
 	});
 var author$project$Login$getAllAdds = elm$http$Http$get(
 	{
-		expect: A2(elm$http$Http$expectJson, author$project$Login$GotLoginResponse, author$project$Login$infoJsonD),
+		expect: A2(elm$http$Http$expectJson, author$project$Login$GotJsonInfo, author$project$Login$infoJsonD),
 		url: author$project$Login$rootUrl + 'userauthapp/getadds/'
 	});
 var author$project$Login$handleError = F2(
@@ -5934,6 +5948,14 @@ var author$project$Login$handleError = F2(
 					model,
 					{error: 'bad body ' + body});
 		}
+	});
+var author$project$Login$LogoutResponse = function (a) {
+	return {$: 'LogoutResponse', a: a};
+};
+var author$project$Login$leave = elm$http$Http$get(
+	{
+		expect: elm$http$Http$expectString(author$project$Login$LogoutResponse),
+		url: author$project$Login$rootUrl + 'userauthapp/logout/'
 	});
 var elm$browser$Browser$External = function (a) {
 	return {$: 'External', a: a};
@@ -6199,36 +6221,66 @@ var author$project$Login$update = F2(
 						model,
 						{phnum: phnum}),
 					elm$core$Platform$Cmd$none);
-			case 'LoginButton':
-				return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+			case 'NewUrl':
+				var url = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{url: url}),
+					elm$core$Platform$Cmd$none);
+			case 'NewDate':
+				var date = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{date: date}),
+					elm$core$Platform$Cmd$none);
+			case 'InfoButton':
+				return _Utils_Tuple2(model, author$project$Login$leave);
 			case 'AuthResponse':
 				var result = msg.a;
 				if (result.$ === 'Ok') {
 					switch (result.a) {
-						case 'LoginFailed':
-							return _Utils_Tuple2(
-								model,
-								elm$browser$Browser$Navigation$load('login.html'));
+						case 'LoggedOut':
+							return _Utils_Tuple2(model, author$project$Login$leave);
 						case 'Auth':
 							return _Utils_Tuple2(model, author$project$Login$getAllAdds);
 						default:
-							return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+							return _Utils_Tuple2(model, author$project$Login$leave);
 					}
 				} else {
 					var error = result.a;
 					return _Utils_Tuple2(
 						A2(author$project$Login$handleError, model, error),
-						elm$core$Platform$Cmd$none);
+						author$project$Login$leave);
 				}
-			default:
+			case 'GotJsonInfo':
 				var result = msg.a;
 				if (result.$ === 'Ok') {
 					var info = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{failed: info.title}),
+							{dubDate: info.date, dubDescription: info.description, dubPhnum: info.phnum, dubPrice: info.price, dubTitle: info.title, dubUrl: info.url}),
 						elm$core$Platform$Cmd$none);
+				} else {
+					var error = result.a;
+					return _Utils_Tuple2(
+						A2(author$project$Login$handleError, model, error),
+						author$project$Login$leave);
+				}
+			default:
+				var result = msg.a;
+				if (result.$ === 'Ok') {
+					if (result.a === 'LoggedOut') {
+						return _Utils_Tuple2(
+							model,
+							elm$browser$Browser$Navigation$load('project3.html'));
+					} else {
+						return _Utils_Tuple2(
+							model,
+							elm$browser$Browser$Navigation$load('project3.html'));
+					}
 				} else {
 					var error = result.a;
 					return _Utils_Tuple2(
@@ -6237,41 +6289,15 @@ var author$project$Login$update = F2(
 				}
 		}
 	});
-var elm$html$Html$li = _VirtualDom_node('li');
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
-var elm$html$Html$ul = _VirtualDom_node('ul');
-var author$project$Login$renderList = function (lst) {
-	return A2(
-		elm$html$Html$ul,
-		_List_Nil,
-		A2(
-			elm$core$List$map,
-			function (l) {
-				return A2(
-					elm$html$Html$li,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text(l)
-						]));
-			},
-			lst));
-};
-var elm$html$Html$a = _VirtualDom_node('a');
+var author$project$Login$InfoButton = {$: 'InfoButton'};
 var elm$html$Html$div = _VirtualDom_node('div');
-var elm$html$Html$footer = _VirtualDom_node('footer');
-var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$h5 = _VirtualDom_node('h5');
 var elm$html$Html$img = _VirtualDom_node('img');
-var elm$virtual_dom$VirtualDom$node = function (tag) {
-	return _VirtualDom_node(
-		_VirtualDom_noScript(tag));
-};
-var elm$html$Html$node = elm$virtual_dom$VirtualDom$node;
 var elm$html$Html$p = _VirtualDom_node('p');
 var elm$html$Html$section = _VirtualDom_node('section');
 var elm$html$Html$span = _VirtualDom_node('span');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$json$Json$Encode$string = _Json_wrap;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6281,6 +6307,185 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$alt = elm$html$Html$Attributes$stringProperty('alt');
+var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
+var elm$html$Html$Attributes$title = elm$html$Html$Attributes$stringProperty('title');
+var author$project$Login$formatList = F6(
+	function (lt, lp, ld, lph, lu, lda) {
+		return A2(
+			elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$img,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$alt(''),
+							elm$html$Html$Attributes$src(lu),
+							elm$html$Html$Attributes$title('')
+						]),
+					_List_Nil),
+					A2(
+					elm$html$Html$section,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$class('list-left')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$h5,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('adprice')
+								]),
+							_List_fromArray(
+								[
+									elm$html$Html$text(lt)
+								])),
+							A2(
+							elm$html$Html$span,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('catpath')
+								]),
+							_List_fromArray(
+								[
+									elm$html$Html$text(ld)
+								])),
+							A2(
+							elm$html$Html$p,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('catpath')
+								]),
+							_List_fromArray(
+								[
+									elm$html$Html$text(lda)
+								]))
+						])),
+					A2(
+					elm$html$Html$section,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$class('list-right')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$span,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('catpath')
+								]),
+							_List_fromArray(
+								[
+									elm$html$Html$text(lp)
+								])),
+							A2(
+							elm$html$Html$span,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('catpath')
+								]),
+							_List_fromArray(
+								[
+									elm$html$Html$text(lph)
+								]))
+						])),
+					A2(
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$class('clearfix')
+						]),
+					_List_Nil)
+				]));
+	});
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var author$project$Login$header = function (xs) {
+	var _n0 = elm$core$List$head(xs);
+	if (_n0.$ === 'Just') {
+		var x = _n0.a;
+		return x;
+	} else {
+		return '';
+	}
+};
+var elm$core$List$tail = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(xs);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var author$project$Login$tailer = function (list) {
+	var _n0 = elm$core$List$tail(list);
+	if (_n0.$ === 'Just') {
+		var xs = _n0.a;
+		return xs;
+	} else {
+		return _List_fromArray(
+			['']);
+	}
+};
+var elm$html$Html$li = _VirtualDom_node('li');
+var author$project$Login$rend = F6(
+	function (a, b, c, d, e, f) {
+		return (!elm$core$List$length(a)) ? A2(elm$html$Html$div, _List_Nil, _List_Nil) : A2(
+			elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$li,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A6(
+							author$project$Login$formatList,
+							author$project$Login$header(a),
+							'$' + author$project$Login$header(b),
+							author$project$Login$header(c),
+							author$project$Login$header(d),
+							author$project$Login$header(e),
+							author$project$Login$header(f))
+						])),
+					A6(
+					author$project$Login$rend,
+					author$project$Login$tailer(a),
+					author$project$Login$tailer(b),
+					author$project$Login$tailer(c),
+					author$project$Login$tailer(d),
+					author$project$Login$tailer(e),
+					author$project$Login$tailer(f))
+				]));
+	});
+var elm$html$Html$a = _VirtualDom_node('a');
+var elm$html$Html$footer = _VirtualDom_node('footer');
+var elm$html$Html$h1 = _VirtualDom_node('h1');
+var elm$virtual_dom$VirtualDom$node = function (tag) {
+	return _VirtualDom_node(
+		_VirtualDom_noScript(tag));
+};
+var elm$html$Html$node = elm$virtual_dom$VirtualDom$node;
+var elm$html$Html$ul = _VirtualDom_node('ul');
 var elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -6289,7 +6494,6 @@ var elm$virtual_dom$VirtualDom$attribute = F2(
 			_VirtualDom_noJavaScriptOrHtmlUri(value));
 	});
 var elm$html$Html$Attributes$attribute = elm$virtual_dom$VirtualDom$attribute;
-var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		elm$html$Html$Attributes$stringProperty,
@@ -6299,14 +6503,24 @@ var elm$html$Html$Attributes$href = function (url) {
 var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
 var elm$html$Html$Attributes$media = _VirtualDom_attribute('media');
 var elm$html$Html$Attributes$rel = _VirtualDom_attribute('rel');
-var elm$html$Html$Attributes$src = function (url) {
-	return A2(
-		elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
-var elm$html$Html$Attributes$title = elm$html$Html$Attributes$stringProperty('title');
 var elm$html$Html$Attributes$type_ = elm$html$Html$Attributes$stringProperty('type');
+var elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		elm$html$Html$Events$on,
+		'click',
+		elm$json$Json$Decode$succeed(msg));
+};
 var author$project$Login$view = function (model) {
 	return A2(
 		elm$html$Html$div,
@@ -6427,7 +6641,7 @@ var author$project$Login$view = function (model) {
 										elm$html$Html$a,
 										_List_fromArray(
 											[
-												elm$html$Html$Attributes$href('index.html')
+												elm$html$Html$Attributes$href('main.html')
 											]),
 										_List_fromArray(
 											[
@@ -6454,11 +6668,12 @@ var author$project$Login$view = function (model) {
 										_List_fromArray(
 											[
 												elm$html$Html$Attributes$class('account'),
-												elm$html$Html$Attributes$href('login.html')
+												elm$html$Html$Attributes$href('project3.html'),
+												elm$html$Html$Events$onClick(author$project$Login$InfoButton)
 											]),
 										_List_fromArray(
 											[
-												elm$html$Html$text('My Account')
+												elm$html$Html$text('Logout')
 											]))
 									]))
 							]))
@@ -6502,13 +6717,13 @@ var author$project$Login$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										elm$html$Html$text('poop')
+										elm$html$Html$text('Better than ebay')
 									])),
 								A2(
 								elm$html$Html$a,
 								_List_fromArray(
 									[
-										elm$html$Html$Attributes$href('post-ad.html')
+										elm$html$Html$Attributes$href('post.html')
 									]),
 								_List_fromArray(
 									[
@@ -6677,7 +6892,7 @@ var author$project$Login$view = function (model) {
 																												_List_fromArray(
 																													[
 																														elm$html$Html$Attributes$alt(''),
-																														elm$html$Html$Attributes$src('images/m1.jpg'),
+																														elm$html$Html$Attributes$src('https://media.giphy.com/media/9JYeYbiHFCSha/giphy.gif'),
 																														elm$html$Html$Attributes$title('')
 																													]),
 																												_List_Nil),
@@ -6693,21 +6908,11 @@ var author$project$Login$view = function (model) {
 																														elm$html$Html$h5,
 																														_List_fromArray(
 																															[
-																																elm$html$Html$Attributes$class('title')
-																															]),
-																														_List_fromArray(
-																															[
-																																elm$html$Html$text('There are many variations of passages of Lorem Ipsum')
-																															])),
-																														A2(
-																														elm$html$Html$span,
-																														_List_fromArray(
-																															[
 																																elm$html$Html$Attributes$class('adprice')
 																															]),
 																														_List_fromArray(
 																															[
-																																elm$html$Html$text('$290')
+																																elm$html$Html$text('Two bed rooms for sublease on Emerson Street')
 																															])),
 																														A2(
 																														elm$html$Html$p,
@@ -6717,7 +6922,17 @@ var author$project$Login$view = function (model) {
 																															]),
 																														_List_fromArray(
 																															[
-																																elm$html$Html$text('Mobile Phones » Brand')
+																																elm$html$Html$text('Great Home And An Even Greater Lot In This Desirable Neighborhood Located In Downtown Brampton Walking Distance To Gage Park And The Rose Theater. This Home Is Move In Ready For A First Time Home Buyer, Young Professionals Or A Builder Looking To Expand On This Great Lot. Two Sheds Located On Property. ')
+																															])),
+																														A2(
+																														elm$html$Html$p,
+																														_List_fromArray(
+																															[
+																																elm$html$Html$Attributes$class('catpath')
+																															]),
+																														_List_fromArray(
+																															[
+																																elm$html$Html$text('04/28/2019, 00:43:13')
 																															]))
 																													])),
 																												A2(
@@ -6732,21 +6947,21 @@ var author$project$Login$view = function (model) {
 																														elm$html$Html$span,
 																														_List_fromArray(
 																															[
-																																elm$html$Html$Attributes$class('date')
+																																elm$html$Html$Attributes$class('catpath')
 																															]),
 																														_List_fromArray(
 																															[
-																																elm$html$Html$text('Today, 17:55')
+																																elm$html$Html$text('$849')
 																															])),
 																														A2(
 																														elm$html$Html$span,
 																														_List_fromArray(
 																															[
-																																elm$html$Html$Attributes$class('cityname')
+																																elm$html$Html$Attributes$class('catpath')
 																															]),
 																														_List_fromArray(
 																															[
-																																elm$html$Html$text('City name')
+																																elm$html$Html$text('\n\n\nWendy, weny@properties.com, 416-563-2192')
 																															]))
 																													])),
 																												A2(
@@ -6763,9 +6978,9 @@ var author$project$Login$view = function (model) {
 																											[
 																												elm$html$Html$Attributes$class('clearfix')
 																											]),
-																										_List_Nil)
-																									])),
-																								author$project$Login$renderList(model.failed)
+																										_List_Nil),
+																										A6(author$project$Login$rend, model.dubTitle, model.dubPrice, model.dubDescription, model.dubPhnum, model.dubUrl, model.dubDate)
+																									]))
 																							]))
 																					]))
 																			]))

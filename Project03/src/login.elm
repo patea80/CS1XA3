@@ -16,7 +16,7 @@ import String
 
 
 rootUrl =
-    "http://localhost:8000/"
+    "http://mac1xa3.ca/e/patea80/"
 
 
 
@@ -31,13 +31,10 @@ main =
         , view = view
         }
 
-
-
 {- -------------------------------------------------------------------------------------------
    - Model
    --------------------------------------------------------------------------------------------
 -}
-
 
 
 type alias Model =
@@ -54,7 +51,7 @@ init _ =
     ( { name = ""
       , password = ""
       , error = ""
-      , failed = "Let me in!"
+      , failed = ""
       }
     , Cmd.none
     )
@@ -99,7 +96,7 @@ view model = div []
                 [ div [ class "sign-in-form" ]
                     [ div [ class "sign-in-form-top" ]
                         [ h1 []
-                            [ text "Log in" ]
+                            [ text model.failed ]
                         ]
                     , div [ class "signin" ]
                         [ div [ class "signin-rit" ]
@@ -119,7 +116,7 @@ view model = div []
                                     []
                                 ]
                             , div []
-                                [ input [ type_ "submit", value model.failed, Events.onClick LoginButton ]
+                                [ input [ type_ "submit", value "Login", Events.onClick LoginButton ]
                                     []
                                 ]
                     ]
@@ -141,7 +138,7 @@ view model = div []
         , text "	"
         ]
     ]
-
+--to check for input
 viewInput : String -> String -> String -> (String -> Msg) -> Html Msg
 viewInput t p v toMsg =
     input [ type_ t, placeholder p, Events.onInput toMsg ] []
@@ -154,6 +151,7 @@ viewInput t p v toMsg =
    --------------------------------------------------------------------------------------------
 -}
 
+--encodes username and password to send it off to server
 passwordEncoder : Model -> JEncode.Value
 passwordEncoder model =
     JEncode.object
@@ -164,7 +162,7 @@ passwordEncoder model =
           , JEncode.string model.password
           )
         ]
-
+--post request to login
 loginPost : Model -> Cmd Msg
 loginPost model =
     Http.post
@@ -204,7 +202,7 @@ update msg model =
                     ( { model | error = "failed to login", failed = "Incorrect username or password, try again :(" }, Cmd.none )
 
                 Ok "READY" ->
-                    ( model, load "post.html" )
+                    ( model, load "main.html" )
 
                 Ok _ ->
                      ( { model | error = "failed to login", failed = "Something went wrong:(" }, Cmd.none )
