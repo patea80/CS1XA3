@@ -38,9 +38,7 @@ $ cd CS1XA3/Project03/django_project/
 $ python manage.py runserver localhost:8000
 ```
 
-### Plugins
-
-Dillinger is currently extended with the following plugins. Instructions on how to use them in your own application are linked below.
+### Resources
 
 | Resource | Source |
 | ------ | ------ |
