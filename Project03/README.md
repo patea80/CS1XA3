@@ -35,7 +35,7 @@ For production environments install dependecies, and go into django_project...
 $ pip install -r CS1XA3/Project03/requirements.txt
 $ source env/bin/activate
 $ cd CS1XA3/Project03/django_project/
-$ python manage.py runserver localhost:8000
+$ python manage.py runserver localhost:10047
 ```
 
 ### Resources
