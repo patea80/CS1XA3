@@ -13,6 +13,11 @@ Resale is an online classified advertising service that operates as a centralize
   - SQL database, OneToMany relation using Foriegn key for user's relation to user's advertisements
   - Json parsing: Json encoding, and decoding with Python, and Elm
 
+### Access
+To access page from server on browser, follow this link
+`https://mac1xa3.ca/e/patea80/static/project3.html`
+
+
 ### Installation
 
 Clone the repo, create and activate a Python Environment
