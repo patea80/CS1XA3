@@ -13,4 +13,4 @@ urlpatterns = [
     path('userinfo/', views.user_info , name = 'userauthapp-user_info') ,
     
 
-] +static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+]

@@ -80,6 +80,7 @@ def add_user(request):
 def login_user(request):
     """recieves a json request { 'username' : 'val0' : 'password' : 'val1' } and
        authenticates and loggs in the user upon success """
+    print("login")
     json_req = json.loads(request.body)
     uname = json_req.get('username','')
     passw = json_req.get('password','')

@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 root = "e/patea80/"
 urlpatterns = [
-    path('userauthapp/', include('userauthapp.urls')),
+    path(root + 'userauthapp/', include('userauthapp.urls')),
 
 ]

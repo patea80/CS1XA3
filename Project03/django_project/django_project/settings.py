@@ -126,7 +126,5 @@ STATIC_URL = '/e/patea80/static/'
 STATICFILES_DIRS = [
                     "/home/patea80/CS1XA3/Project03/static",
                     ]
-STATIC_ROOT = "./static"
+STATIC_ROOT = "./static/"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'django_project')

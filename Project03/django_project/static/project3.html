@@ -4974,7 +4974,7 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$Login$init = function (_n0) {
 	return _Utils_Tuple2(
-		{confirmPass: '', email: '', error: '', failed: '', fullname: '', name: '', password: ''},
+		{error: '', failed: '', name: '', password: ''},
 		elm$core$Platform$Cmd$none);
 };
 var author$project$Login$handleError = F2(
@@ -5028,12 +5028,6 @@ var author$project$Login$passwordEncoder = function (model) {
 	return elm$json$Json$Encode$object(
 		_List_fromArray(
 			[
-				_Utils_Tuple2(
-				'fullname',
-				elm$json$Json$Encode$string(model.fullname)),
-				_Utils_Tuple2(
-				'email',
-				elm$json$Json$Encode$string(model.email)),
 				_Utils_Tuple2(
 				'username',
 				elm$json$Json$Encode$string(model.name)),
@@ -5927,7 +5921,7 @@ var author$project$Login$loginPost = function (model) {
 			body: elm$http$Http$jsonBody(
 				author$project$Login$passwordEncoder(model)),
 			expect: elm$http$Http$expectString(author$project$Login$GotLoginResponse),
-			url: author$project$Login$rootUrl + 'userauthapp/adduser/'
+			url: author$project$Login$rootUrl + 'userauthapp/loginuser/'
 		});
 };
 var elm$browser$Browser$External = function (a) {
@@ -6161,24 +6155,9 @@ var elm$url$Url$fromString = function (str) {
 		A2(elm$core$String$dropLeft, 8, str)) : elm$core$Maybe$Nothing);
 };
 var elm$browser$Browser$Navigation$load = _Browser_load;
-var elm$core$Basics$neq = _Utils_notEqual;
 var author$project$Login$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'NewFullName':
-				var fullname = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{fullname: fullname}),
-					elm$core$Platform$Cmd$none);
-			case 'NewEmail':
-				var email = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{email: email}),
-					elm$core$Platform$Cmd$none);
 			case 'NewName':
 				var name = msg.a;
 				return _Utils_Tuple2(
@@ -6193,25 +6172,14 @@ var author$project$Login$update = F2(
 						model,
 						{password: password}),
 					elm$core$Platform$Cmd$none);
-			case 'NewConfirmPass':
-				var confirmPass = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{confirmPass: confirmPass}),
-					elm$core$Platform$Cmd$none);
 			case 'LoginButton':
-				return (!_Utils_eq(model.password, model.confirmPass)) ? _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{failed: 'Passwords do not match :('}),
-					elm$core$Platform$Cmd$none) : (((model.fullname === '') || ((model.email === '') || ((model.name === '') || ((model.password === '') || (model.confirmPass === ''))))) ? _Utils_Tuple2(
+				return ((model.name === '') || (model.password === '')) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{failed: 'Please enter the required fields'}),
 					elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					model,
-					author$project$Login$loginPost(model)));
+					author$project$Login$loginPost(model));
 			default:
 				var result = msg.a;
 				if (result.$ === 'Ok') {
@@ -6220,18 +6188,18 @@ var author$project$Login$update = F2(
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
-									{error: 'failed to login', failed: 'Login failed, try again :('}),
+									{error: 'failed to login', failed: 'Incorrect username or password, try again :('}),
 								elm$core$Platform$Cmd$none);
-						case 'Exsists':
+						case 'READY':
+							return _Utils_Tuple2(
+								model,
+								elm$browser$Browser$Navigation$load('main.html'));
+						default:
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
-									{error: 'failed to login', failed: 'Username already taken :('}),
+									{error: 'failed to login', failed: 'Something went wrong:('}),
 								elm$core$Platform$Cmd$none);
-						default:
-							return _Utils_Tuple2(
-								model,
-								elm$browser$Browser$Navigation$load('project3.html'));
 					}
 				} else {
 					var error = result.a;
@@ -6242,15 +6210,6 @@ var author$project$Login$update = F2(
 		}
 	});
 var author$project$Login$LoginButton = {$: 'LoginButton'};
-var author$project$Login$NewConfirmPass = function (a) {
-	return {$: 'NewConfirmPass', a: a};
-};
-var author$project$Login$NewEmail = function (a) {
-	return {$: 'NewEmail', a: a};
-};
-var author$project$Login$NewFullName = function (a) {
-	return {$: 'NewFullName', a: a};
-};
 var author$project$Login$NewName = function (a) {
 	return {$: 'NewName', a: a};
 };
@@ -6317,8 +6276,6 @@ var elm$html$Html$a = _VirtualDom_node('a');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$footer = _VirtualDom_node('footer');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
-var elm$html$Html$h2 = _VirtualDom_node('h2');
-var elm$html$Html$h4 = _VirtualDom_node('h4');
 var elm$virtual_dom$VirtualDom$node = function (tag) {
 	return _VirtualDom_node(
 		_VirtualDom_noScript(tag));
@@ -6365,14 +6322,6 @@ var author$project$Login$view = function (model) {
 			[
 				A3(
 				elm$html$Html$node,
-				'title',
-				_List_Nil,
-				_List_fromArray(
-					[
-						elm$html$Html$text('Resale ')
-					])),
-				A3(
-				elm$html$Html$node,
 				'link',
 				_List_fromArray(
 					[
@@ -6401,7 +6350,6 @@ var author$project$Login$view = function (model) {
 					]),
 				_List_Nil),
 				elm$html$Html$text(''),
-				elm$html$Html$text('	'),
 				A3(
 				elm$html$Html$node,
 				'link',
@@ -6459,7 +6407,7 @@ var author$project$Login$view = function (model) {
 										elm$html$Html$a,
 										_List_fromArray(
 											[
-												elm$html$Html$Attributes$href('project3.html')
+												elm$html$Html$Attributes$href('index.html')
 											]),
 										_List_fromArray(
 											[
@@ -6486,11 +6434,11 @@ var author$project$Login$view = function (model) {
 										_List_fromArray(
 											[
 												elm$html$Html$Attributes$class('account'),
-												elm$html$Html$Attributes$href('project3.html')
+												elm$html$Html$Attributes$href('login.html')
 											]),
 										_List_fromArray(
 											[
-												elm$html$Html$text('Log in')
+												elm$html$Html$text('My Account')
 											])),
 										elm$html$Html$text('		')
 									]))
@@ -6522,29 +6470,31 @@ var author$project$Login$view = function (model) {
 										elm$html$Html$div,
 										_List_fromArray(
 											[
-												elm$html$Html$Attributes$class('sign-up')
+												elm$html$Html$Attributes$class('sign-in-form')
 											]),
 										_List_fromArray(
 											[
 												A2(
-												elm$html$Html$h1,
-												_List_Nil,
+												elm$html$Html$div,
 												_List_fromArray(
 													[
-														elm$html$Html$text(model.failed)
-													])),
-												A2(
-												elm$html$Html$h2,
-												_List_Nil,
+														elm$html$Html$Attributes$class('sign-in-form-top')
+													]),
 												_List_fromArray(
 													[
-														elm$html$Html$text('Personal Information')
+														A2(
+														elm$html$Html$h1,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text(model.failed)
+															]))
 													])),
 												A2(
 												elm$html$Html$div,
 												_List_fromArray(
 													[
-														elm$html$Html$Attributes$class('sign-u')
+														elm$html$Html$Attributes$class('signin')
 													]),
 												_List_fromArray(
 													[
@@ -6552,256 +6502,66 @@ var author$project$Login$view = function (model) {
 														elm$html$Html$div,
 														_List_fromArray(
 															[
-																elm$html$Html$Attributes$class('sign-up1')
+																elm$html$Html$Attributes$class('signin-rit')
 															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$h4,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		elm$html$Html$text('Full Name* :')
-																	]))
-															])),
+														_List_Nil),
 														A2(
 														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up2')
-															]),
+														_List_Nil,
 														_List_fromArray(
 															[
 																A2(
 																elm$html$Html$div,
-																_List_Nil,
 																_List_fromArray(
 																	[
-																		A4(author$project$Login$viewInput, 'text', 'Enter your first and last name', model.fullname, author$project$Login$NewFullName)
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('clearfix')
-															]),
-														_List_Nil)
-													])),
-												A2(
-												elm$html$Html$div,
-												_List_fromArray(
-													[
-														elm$html$Html$Attributes$class('sign-u')
-													]),
-												_List_fromArray(
-													[
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up1')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$h4,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		elm$html$Html$text('Username* :')
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up2')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$div,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		A4(author$project$Login$viewInput, 'text', 'Username', model.name, author$project$Login$NewName)
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('clearfix')
-															]),
-														_List_Nil)
-													])),
-												A2(
-												elm$html$Html$div,
-												_List_fromArray(
-													[
-														elm$html$Html$Attributes$class('sign-u')
-													]),
-												_List_fromArray(
-													[
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up1')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$h4,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		elm$html$Html$text('Email* :')
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up2')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$div,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		A4(author$project$Login$viewInput, 'text', 'Email address', model.email, author$project$Login$NewEmail)
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('clearfix')
-															]),
-														_List_Nil)
-													])),
-												A2(
-												elm$html$Html$div,
-												_List_fromArray(
-													[
-														elm$html$Html$Attributes$class('sign-u')
-													]),
-												_List_fromArray(
-													[
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up1')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$h4,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		elm$html$Html$text('Password* :')
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up2')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$div,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		A4(author$project$Login$viewInput, 'password', 'Password', model.password, author$project$Login$NewPassword)
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('clearfix')
-															]),
-														_List_Nil)
-													])),
-												A2(
-												elm$html$Html$div,
-												_List_fromArray(
-													[
-														elm$html$Html$Attributes$class('sign-u')
-													]),
-												_List_fromArray(
-													[
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up1')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$h4,
-																_List_Nil,
-																_List_fromArray(
-																	[
-																		elm$html$Html$text('Password Again* :')
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sign-up2')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																elm$html$Html$div,
-																_List_Nil,
+																		elm$html$Html$Attributes$class('log-input')
+																	]),
 																_List_fromArray(
 																	[
 																		A2(
 																		elm$html$Html$div,
-																		_List_Nil,
 																		_List_fromArray(
 																			[
-																				A4(author$project$Login$viewInput, 'password', 'Type your password again', model.confirmPass, author$project$Login$NewConfirmPass)
-																			]))
-																	]))
-															])),
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('clearfix')
-															]),
-														_List_Nil)
-													])),
-												A2(
-												elm$html$Html$div,
-												_List_fromArray(
-													[
-														elm$html$Html$Attributes$class('sub_home')
-													]),
-												_List_fromArray(
-													[
-														A2(
-														elm$html$Html$div,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('sub_home_left')
-															]),
-														_List_fromArray(
-															[
+																				elm$html$Html$Attributes$class('log-input-left')
+																			]),
+																		_List_fromArray(
+																			[
+																				A4(author$project$Login$viewInput, 'text', 'Username', model.name, author$project$Login$NewName)
+																			])),
+																		A2(
+																		elm$html$Html$div,
+																		_List_fromArray(
+																			[
+																				elm$html$Html$Attributes$class('clearfix')
+																			]),
+																		_List_Nil)
+																	])),
+																A2(
+																elm$html$Html$div,
+																_List_fromArray(
+																	[
+																		elm$html$Html$Attributes$class('log-input')
+																	]),
+																_List_fromArray(
+																	[
+																		A2(
+																		elm$html$Html$div,
+																		_List_fromArray(
+																			[
+																				elm$html$Html$Attributes$class('log-input-left')
+																			]),
+																		_List_fromArray(
+																			[
+																				A4(author$project$Login$viewInput, 'password', 'Password', model.password, author$project$Login$NewPassword)
+																			])),
+																		A2(
+																		elm$html$Html$div,
+																		_List_fromArray(
+																			[
+																				elm$html$Html$Attributes$class('clearfix')
+																			]),
+																		_List_Nil)
+																	])),
 																A2(
 																elm$html$Html$div,
 																_List_Nil,
@@ -6812,19 +6572,31 @@ var author$project$Login$view = function (model) {
 																		_List_fromArray(
 																			[
 																				elm$html$Html$Attributes$type_('submit'),
-																				elm$html$Html$Attributes$value('Sign up'),
+																				elm$html$Html$Attributes$value('Login'),
 																				elm$html$Html$Events$onClick(author$project$Login$LoginButton)
 																			]),
 																		_List_Nil)
 																	]))
-															])),
+															]))
+													])),
+												A2(
+												elm$html$Html$div,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$class('new_people')
+													]),
+												_List_fromArray(
+													[
 														A2(
-														elm$html$Html$div,
+														elm$html$Html$a,
 														_List_fromArray(
 															[
-																elm$html$Html$Attributes$class('clearfix')
+																elm$html$Html$Attributes$href('register.html')
 															]),
-														_List_Nil)
+														_List_fromArray(
+															[
+																elm$html$Html$text('Register Now!')
+															]))
 													]))
 											]))
 									]))
