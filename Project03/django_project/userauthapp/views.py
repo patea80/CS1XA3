@@ -23,7 +23,7 @@ def post_add(request):
     now = now = datetime.now()
     date = str(now.strftime("%m/%d/%Y, %H:%M:%S"))
     u = request.user
-    phnum =  str(request.user)+", "+u.email+", " +  phnum
+    phnum =  "\n"+ str(request.user)+", "+u.email+", " +  phnum
     if title == "":
         return HttpResponse("IncompleteInfo")
     else: 
