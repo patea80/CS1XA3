@@ -13,6 +13,11 @@ Resale is an online classified advertising service that operates as a centralize
   - SQL database, OneToMany relation using Foriegn key for user's relation to user's advertisements
   - Json parsing: Json encoding, and decoding with Python, and Elm
 
+### Access
+To access page from server on browser, follow this link
+`https://mac1xa3.ca/e/patea80/static/project3.html`
+
+
 ### Installation
 
 Clone the repo, create and activate a Python Environment
@@ -30,12 +35,10 @@ For production environments install dependecies, and go into django_project...
 $ pip install -r CS1XA3/Project03/requirements.txt
 $ source env/bin/activate
 $ cd CS1XA3/Project03/django_project/
-$ python manage.py runserver localhost:8000
+$ python manage.py runserver localhost:10047
 ```
 
-### Plugins
-
-Dillinger is currently extended with the following plugins. Instructions on how to use them in your own application are linked below.
+### Resources
 
 | Resource | Source |
 | ------ | ------ |
